@@ -72,11 +72,14 @@ router.post('/login', checkUsernameExists, async (req, res, next) => {
         message: `Welcome ${req.user.username}!`
       })
     } else {
-      next()
+      res.status(401).json({
+        message: 'Invalid credentials'
+      })
     }
   } catch (err) {
     next(err)
   }
+  // console.log('yes')
 })
 
 /**
@@ -97,21 +100,22 @@ router.post('/login', checkUsernameExists, async (req, res, next) => {
 router.get('/logout', (req, res, next) => {
   
   if (req.session.user) {
-    const { username } = req.session.user
     req.session.destroy(err => {
-    if (err) {
-      res.json({ message: 'you shall not leave me!' })
-    } else {
-      res.json({
-        message: `goodbye ${username}`
-      })
-    }
-  })
+      if (err) {
+        res.json({ message: 'you shall not pass' })
+      } else {
+        res.json({
+          message: `logged out`
+        })
+      }
+    })
   } else {
     res.status(200).json({
       message: 'no session'
     })
+    
   }
+  console.log(req.session)
 })
  
 // Don't forget to add the router to the `exports` object so it can be required in other modules

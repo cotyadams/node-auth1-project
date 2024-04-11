@@ -10,7 +10,7 @@ const users = require('../users/users-model')
 
 
 function restricted(req, res, next) {
-  if (req.session && req.session.user.user_id) {
+  if (req.session && req.session.user) {
     next()
   } else {
     res.status(401).json({
