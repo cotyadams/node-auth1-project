@@ -68,7 +68,6 @@ router.post('/login', checkUsernameExists, async (req, res, next) => {
   try {
     if (bcrypt.compareSync(password, req.user.password)) {
       req.session.user = req.user
-      console.log(req.session)
       res.status(200).json({
         message: `Welcome ${req.user.username}!`
       })
@@ -96,8 +95,10 @@ router.post('/login', checkUsernameExists, async (req, res, next) => {
   }
  */
 router.get('/logout', (req, res, next) => {
-  const {username} = req.session.user
-  req.session.destroy(err => {
+  
+  if (req.session.user) {
+    const { username } = req.session.user
+    req.session.destroy(err => {
     if (err) {
       res.json({ message: 'you shall not leave me!' })
     } else {
@@ -106,6 +107,11 @@ router.get('/logout', (req, res, next) => {
       })
     }
   })
+  } else {
+    res.status(200).json({
+      message: 'no session'
+    })
+  }
 })
  
 // Don't forget to add the router to the `exports` object so it can be required in other modules

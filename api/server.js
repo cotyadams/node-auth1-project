@@ -48,6 +48,7 @@ const sessionConfig = {
     clearInterval: 1000 * 60 * 60, // time it takes to check for old sessions and remove them from the database to keep it clean and performant
   }),
 }
+
 server.use(session(sessionConfig));
 
 server.use('/api/users', usersRouter)
